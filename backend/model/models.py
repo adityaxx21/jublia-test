@@ -33,6 +33,7 @@ class Recipient(db.Model):
     email = Column(String, unique=True, nullable=False)
     created_at = Column(TIMESTAMP(timezone=True), nullable=False,  default=get_utc_plus_8())
     updated_at = Column(TIMESTAMP(timezone=True), nullable=False, default=get_utc_plus_8(), onupdate = get_utc_plus_8())
+    deleted_at = Column(TIMESTAMP(timezone=True), nullable=False)
     
     def serialize(self):
         return {
@@ -41,8 +42,6 @@ class Recipient(db.Model):
             'created_at': self.created_at.isoformat(),
             'updated_at': self.updated_at.isoformat(),
         }
-    
-    
 
     
 
