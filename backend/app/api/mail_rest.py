@@ -1,8 +1,8 @@
 from flask import Blueprint, jsonify, request
-from model.models import db, Email, Recipient
-from service.mail_service import MailService
-from tasks.tasks import add_together
+from app.models.models import db, Email, Recipient
+from app.services.mail_service import MailService
 from helper.helpers import get_utc_plus_8
+from app.tasks.celery_tasks import  long_running_task
 
 api = Blueprint('api', __name__)
 email_service = MailService
@@ -10,8 +10,7 @@ email_service = MailService
 @api.get('/get_emails')
 def get_emails():
     emails = Email.query.filter_by(deleted_at=None).all()
-    result = add_together.delay(10, 20)
-    print(result)
+    long_running_task.delay(10)
     return jsonify([email.serialize() for email in emails])
 
 @api.post('/save_emails')
