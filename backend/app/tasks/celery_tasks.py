@@ -5,8 +5,9 @@ import datetime
 from app.services.mail_service import MailService
 from app.models.models import db, Email, Recipient
 from helper.helpers import get_utc_plus_8
-
+from app.config import mail_sender
 mail_service = MailService
+mail_send = mail_sender
 
 @shared_task()
 def periodic_task():
@@ -19,7 +20,7 @@ def periodic_task():
                     mail_content = email.email_content,
                     mail_subject = email.email_subject,
                     mail_recipient = recipient_dict_list,
-                    mail_sender = "asas@gmaio.com"
+                    mail_sender = mail_send
                 )
 
                 if mail_responese == True:
