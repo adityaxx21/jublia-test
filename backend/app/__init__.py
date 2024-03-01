@@ -30,12 +30,11 @@ def create_app(config_name="development"):
     app.config.from_prefixed_env()
     celery = celery_init_app(app)
     celery.set_default()
-    celery_sceduler(celery)
     
     with app.app_context():
         db.init_app(app)
         db.create_all()
+        celery_sceduler(celery, db)
         
-
     return app, celery
 

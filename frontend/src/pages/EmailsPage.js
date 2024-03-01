@@ -17,7 +17,7 @@ function EmailPage() {
     const fetchData = async () => {
       try {
         const data = await getEmails(); // Call the getEmails function from the service to fetch emails
-        setTableData(data); // Set the fetched data to the tableData state
+        setTableData(data.data); // Set the fetched data to the tableData state
       } catch (error) {
         // Handle errors
         console.error("Error fetching emails:", error);

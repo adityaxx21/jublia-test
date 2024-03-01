@@ -1,5 +1,6 @@
 from celery import Celery
 from celery.schedules import schedule
+from app.tasks.celery_tasks import periodic_task
 
 def celery_init_app(app):
     celery = Celery(app.import_name)
@@ -13,7 +14,7 @@ def celery_init_app(app):
     celery.Task = ContextTask
     return celery
 
-def celery_sceduler(celery):
+def celery_sceduler(celery, db):    
     celery.conf.beat_schedule = {
         'add-every-60-seconds': {
             'task': 'app.tasks.celery_tasks.periodic_task',

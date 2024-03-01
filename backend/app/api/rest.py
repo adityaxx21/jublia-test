@@ -19,7 +19,7 @@ email_service = MailService
 @api.get('/get_emails')
 def get_emails():
     emails = Email.query.filter_by(deleted_at=None).all()
-    return jsonify([email.serialize() for email in emails])
+    return base_rest.get_response_object(200, [email.serialize() for email in emails])
 
 @api.post('/save_emails')
 def create_task():

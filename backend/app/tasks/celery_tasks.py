@@ -1,13 +1,12 @@
 
 from celery import shared_task
-from time import sleep
+
 import datetime
 from app.services.mail_service import MailService
 from app.models.models import db, Email, Recipient
 from helper.helpers import get_utc_plus_8
-from app.config import mail_sender
+from app.config import mail_sender as mail_send
 mail_service = MailService
-mail_send = mail_sender
 
 @shared_task()
 def periodic_task():
