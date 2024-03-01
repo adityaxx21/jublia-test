@@ -8,7 +8,6 @@ from .config import config_by_name
 from flask_cors import CORS
 
 from flask_mail import Mail
-from celery import Celery, Task
 mail = Mail()
 
 

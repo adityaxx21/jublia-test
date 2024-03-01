@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "../App.css";
 import MyButton from "../components/MyButton";
-import { getEmails } from "../API/emailsAPI";
+import { getEmails, postEmails } from "../API/emailsAPI";
 
 function EmailPage() {
   const [formData, setFormData] = useState({
@@ -33,20 +33,25 @@ function EmailPage() {
     setFormData({ ...formData, [name]: newValue });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setTableData([...tableData, formData]);
-    setFormData({
-      event_id: "",
-      email_subject: "",
-      email_content: "",
-      timestamp: "",
-    });
+    try {
+      const data = await postEmails(formData)
+      setTableData([...tableData, data.data]);
+      setFormData({
+        event_id: "",
+        email_subject: "",
+        email_content: "",
+        timestamp: "",
+      });
+    } catch (error) {
+      console.error("Error adding email:", error);
+    }
   };
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-4">React Form and Table Example</h1>
+      <h1 className="text-3xl font-bold mb-4">Emails Tables</h1>
       <form onSubmit={handleSubmit} className="mb-4">
         <label className="block mb-2">
           Event ID:

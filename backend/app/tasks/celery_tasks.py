@@ -5,7 +5,6 @@ import datetime
 from app.services.mail_service import MailService
 from app.models.models import db, Email, Recipient
 from helper.helpers import get_utc_plus_8
-from app.config import mail_sender
 
 mail_service = MailService
 
@@ -16,13 +15,11 @@ def periodic_task():
         if emails:
             for email in emails:
                 recipient_dict_list = [rec.email for rec in Recipient.query.filter_by(deleted_at=None).all()]
-                # recipient_address = "是一封测试邮件@example.com"
-                # encoded_address = recipient_address.encode('utf-8')
                 mail_responese = mail_service.send_email(
                     mail_content = email.email_content,
                     mail_subject = email.email_subject,
                     mail_recipient = recipient_dict_list,
-                    mail_sender = mail_sender
+                    mail_sender = "asas@gmaio.com"
                 )
 
                 if mail_responese == True:

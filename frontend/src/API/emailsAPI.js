@@ -1,14 +1,24 @@
 // userService.js
-import axios from 'axios';
+import axios from "axios";
 
-const BASE_URL = process.env.REACT_APP_BASE_URL;; // Your API base URL
+const BASE_URL = process.env.REACT_APP_BASE_URL; // Your API base URL
 
 export const getEmails = async () => {
   try {
     const response = await axios.get(`${BASE_URL}/get_emails`);
     return response.data; // Return the data from the response
   } catch (error) {
-    console.error('Error fetching users:', error);
+    console.error("Error fetching users:", error);
+    throw error; // Rethrow the error to handle it in the component
+  }
+};
+
+export const postEmails = async (formData) => {
+  try {
+    const response = await axios.post(`${BASE_URL}/save_emails`, formData);
+    return response.data; // Return the data from the response
+  } catch (error) {
+    console.error("Error fetching users:", error);
     throw error; // Rethrow the error to handle it in the component
   }
 };
