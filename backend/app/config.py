@@ -38,7 +38,7 @@ class ProductionConfig():
     MAIL_USE_SSL = environ.get('MAIL_USE_SSL')
     
 mail_sender = environ.get('MAIL_SENDER', 'jublia@example.com')
-
+PORT = 5000
 config_by_name = dict(
     development = DevelopmentConfig,
     production = ProductionConfig

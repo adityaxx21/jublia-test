@@ -18,7 +18,7 @@ def celery_sceduler(celery, db):
     celery.conf.beat_schedule = {
         'add-every-60-seconds': {
             'task': 'app.tasks.celery_tasks.periodic_task',
-            'schedule': 10.0,
+            'schedule': 60.0,
         },
     }
     
