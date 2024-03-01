@@ -1,6 +1,7 @@
-from sqlalchemy import Column, Integer, String, TIMESTAMP
+from sqlalchemy import Column, Integer, String, TIMESTAMP, UnicodeText
 from flask_sqlalchemy import SQLAlchemy
 from helper.helpers import get_utc_plus_8
+from marshmallow import Schema, fields, ValidationError
 
 db = SQLAlchemy()
 
@@ -14,7 +15,7 @@ class Email(db.Model):
     timestamp = Column(TIMESTAMP(timezone=True), nullable=False)
     created_at = Column(TIMESTAMP(timezone=True), nullable=False,  default=get_utc_plus_8())
     updated_at = Column(TIMESTAMP(timezone=True), nullable=False, default=get_utc_plus_8(), onupdate = get_utc_plus_8())
-    deleted_at = Column(TIMESTAMP(timezone=True), nullable=False)
+    deleted_at = Column(TIMESTAMP(timezone=True), nullable=True)
     
     def serialize(self):
         return {
@@ -30,10 +31,10 @@ class Email(db.Model):
 class Recipient(db.Model):
     __tablename__ = 'recipients'
     id = Column(Integer, primary_key=True)
-    email = Column(String, unique=True, nullable=False)
+    email = Column(UnicodeText, unique=True, nullable=False)
     created_at = Column(TIMESTAMP(timezone=True), nullable=False,  default=get_utc_plus_8())
     updated_at = Column(TIMESTAMP(timezone=True), nullable=False, default=get_utc_plus_8(), onupdate = get_utc_plus_8())
-    deleted_at = Column(TIMESTAMP(timezone=True), nullable=False)
+    deleted_at = Column(TIMESTAMP(timezone=True), nullable=True)
     
     def serialize(self):
         return {

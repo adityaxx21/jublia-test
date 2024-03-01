@@ -13,9 +13,9 @@ class MailService:
             mail = app.extensions.get('mail')
             mail.send(msg)
             app.logger.info("Mail sent")
-            return "Mail sent successfully"
+            return True
         except Exception as e:
             app.logger.info("Mail not sent: ", e)
-            return "Mail not sent"
+            return False
             
 

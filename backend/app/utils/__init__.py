@@ -12,3 +12,12 @@ def celery_init_app(app):
 
     celery.Task = ContextTask
     return celery
+
+def celery_sceduler(celery):
+    celery.conf.beat_schedule = {
+        'add-every-60-seconds': {
+            'task': 'app.tasks.celery_tasks.periodic_task',
+            'schedule': 60.0,
+        },
+    }
+    

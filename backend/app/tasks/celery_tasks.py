@@ -5,17 +5,9 @@ import datetime
 from app.services.mail_service import MailService
 from app.models.models import db, Email, Recipient
 from helper.helpers import get_utc_plus_8
+from app.config import mail_sender
 
 mail_service = MailService
-
-@shared_task(ignore_result=False)
-def long_running_task(iterations) -> int:
-    result = 0
-    for i in range(iterations):
-        result += i
-        print(result)
-        sleep(2) 
-    return result 
 
 @shared_task()
 def periodic_task():
@@ -24,15 +16,21 @@ def periodic_task():
         if emails:
             for email in emails:
                 recipient_dict_list = [rec.email for rec in Recipient.query.filter_by(deleted_at=None).all()]
-                mail_service.send_email(
+                # recipient_address = "是一封测试邮件@example.com"
+                # encoded_address = recipient_address.encode('utf-8')
+                mail_responese = mail_service.send_email(
                     mail_content = email.email_content,
                     mail_subject = email.email_subject,
                     mail_recipient = recipient_dict_list,
-                    mail_sender = "adityayatma@gmail.com"
+                    mail_sender = mail_sender
                 )
-                email.deleted_at = get_utc_plus_8()
-                db.session.commit()
-                print(f"Mail Successfully at {datetime.datetime.now()}")
+
+                if mail_responese == True:
+                    email.deleted_at = get_utc_plus_8()
+                    db.session.commit()
+                    print(f"Mail Successfully at {datetime.datetime.now()}")
+                else:
+                    print("Mail Not Send")
         else:
             print("Data Not Found")
     except db.exc.SQLAlchemyError as e:
